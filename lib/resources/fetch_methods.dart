@@ -3,7 +3,7 @@ import 'package:code_brothers/models/photo.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
-import '../utils/uri.dart';
+import '../utils/global_variables.dart';
 import 'package:flutter/foundation.dart';
 
 Future<List<Comment>> fetchComments(http.Client client) async {

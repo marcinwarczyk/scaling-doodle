@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../models/photo.dart';
@@ -7,23 +8,39 @@ import '../resources/fetch_methods.dart';
 import '../utils/colors.dart';
 
 
-class PhotosScreen extends StatelessWidget {
+class PhotosScreen extends StatefulWidget {
   const PhotosScreen({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
+  State<PhotosScreen> createState() => _PhotosScreenState();
+}
+
+class _PhotosScreenState extends State<PhotosScreen> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(widget.title),
       ),
       body: FutureBuilder<List<Photo>>(
         future: fetchPhotos(http.Client()),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return const Center(
-              child: Text('An error has occurred!'),
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('An error has occurred!'),
+                  InkWell(
+                    child: CupertinoButton(
+                      onPressed: () { setState(() {}); },
+                      child: const Text('Try again'),
+                    ),
+                  ),
+                ],
+              ),
             );
           } else if (snapshot.hasData) {
             return PhotosList(photos: snapshot.data!);
