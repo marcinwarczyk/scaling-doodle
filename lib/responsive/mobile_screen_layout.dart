@@ -46,8 +46,8 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
         controller: pageController,
         onPageChanged: onPageChanged,
         children: const [
-          PhotosScreen(),
-          CommentsScreen(),
+          PhotosScreen(title: 'Photos',),
+          CommentsScreen(title: 'Comments',),
         ],
       ),
       bottomNavigationBar: CupertinoTabBar(
@@ -55,7 +55,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.home_outlined,
+              Icons.photo_library_outlined,
               color: (_page == 0) ? primaryColor : secondaryColor,
             ),
             label: 'Photos',
@@ -63,7 +63,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.account_box_outlined,
+              Icons.comment_bank_outlined,
               color: (_page == 1) ? primaryColor : secondaryColor,
             ),
             label: 'Comments',
