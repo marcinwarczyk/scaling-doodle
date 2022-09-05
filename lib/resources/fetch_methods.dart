@@ -6,28 +6,36 @@ import 'dart:convert';
 import '../utils/global_variables.dart';
 import 'package:flutter/foundation.dart';
 
-Future<List<Comment>> fetchComments(http.Client client) async {
-  final response = await client
-      .get(Uri.parse(commentsUri));
+import '../utils/utils.dart';
 
-  return compute(parseComments, response.body);
-}
+class Data<T> {
 
-List<Comment> parseComments(String responseBody) {
-  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+  Future<List<T>> fetchData(http.Client client, context) async {
+    Future<List<T>> result = Future.value([]);
+    try {
+      String uri = "";
+      uri = (T == Comment) ? commentsUri : photosUri;
+      final response = await client.get(Uri.parse(uri));
+      result = compute(parseData, response.body);
+    } catch (err) {
+      showSnackBar(err.toString(), context);
+      throw Exception();
+    }
+    return result;
+  }
 
-  return parsed.map<Comment>((json) => Comment.fromJson(json)).toList();
-}
-
-Future<List<Photo>> fetchPhotos(http.Client client) async {
-  final response = await client
-      .get(Uri.parse(photosUri));
-
-  return compute(parsePhotos, response.body);
-}
-
-List<Photo> parsePhotos(String responseBody) {
-  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
-
-  return parsed.map<Photo>((json) => Photo.fromJson(json)).toList();
+  List<T> parseData(String responseBody) {
+    try {
+      final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+      if (T == Comment) {
+        return parsed.map<T>((json) => Comment.fromJson(json)).toList();
+      } else {
+        /*Photo*/
+        return parsed.map<T>((json) => Photo.fromJson(json)).toList();
+      }
+    }
+    catch(err){
+      throw Exception(err);
+    }
+  }
 }

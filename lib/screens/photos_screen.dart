@@ -2,10 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../models/photo.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../resources/fetch_methods.dart';
-import '../utils/colors.dart';
 
 
 class PhotosScreen extends StatefulWidget {
@@ -18,6 +16,7 @@ class PhotosScreen extends StatefulWidget {
 }
 
 class _PhotosScreenState extends State<PhotosScreen> {
+  Data data = Data<Photo>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +24,7 @@ class _PhotosScreenState extends State<PhotosScreen> {
         title: Text(widget.title),
       ),
       body: FutureBuilder<List<Photo>>(
-        future: fetchPhotos(http.Client()),
+        future: data.fetchData(http.Client(), context) as Future<List<Photo>>,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(

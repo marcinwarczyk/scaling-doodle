@@ -1,10 +1,10 @@
+import 'dart:async';
 import 'package:code_brothers/models/comment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../resources/fetch_methods.dart';
 import '../utils/colors.dart';
-import '../utils/utils.dart';
 
 class CommentsScreen extends StatefulWidget {
   const CommentsScreen({Key? key, required this.title}) : super(key: key);
@@ -16,6 +16,21 @@ class CommentsScreen extends StatefulWidget {
 }
 
 class _CommentsScreenState extends State<CommentsScreen> {
+  Data data = Data<Comment>();
+
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+
+  @override
+  void dispose() {
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +38,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
         title: Text(widget.title),
       ),
       body: FutureBuilder<List<Comment>>(
-        future: fetchComments(http.Client()),
+        future: data.fetchData(http.Client(), context) as Future<List<Comment>>,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
 
